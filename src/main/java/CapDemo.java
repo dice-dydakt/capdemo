@@ -51,7 +51,7 @@ public class CapDemo {
             } else if ("partition".equalsIgnoreCase(input)) {
                 // For demonstration purposes, isolating node3 from node1 and node2.
                 emulatePartition(node3);
-                System.out.println("Network partition emulated. Node 3 is isolated from Node 1 and Node 2.");
+                System.out.println("Network partition emulated. Node 3 is isolated from Node 1, 2 and 4.");
             } else if ("heal".equalsIgnoreCase(input)) {
                 // Resetting the configurations to heal the partition.
                 JoinConfig joinConfigNode3 = node3.getConfig().getNetworkConfig().getJoin();
@@ -63,5 +63,6 @@ public class CapDemo {
         node1.shutdown();
         node2.shutdown();
         node3.shutdown();
+        node4.shutdown();
     }
 }
