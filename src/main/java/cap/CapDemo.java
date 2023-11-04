@@ -18,26 +18,24 @@ public class CapDemo {
     private static final String MEMBER_1 = "127.0.0.1:5701";
     private static final String MEMBER_2 = "127.0.0.1:5702";
     private static final String MEMBER_3 = "127.0.0.1:5703";
-    private static final String MEMBER_4 = "127.0.0.1:5704";
 
     private final List<HazelcastInstance> nodes = List.of(
             newHazelcastInstance(createConfig(MEMBER_1), "node1", new FirewallingNodeContext()),
             newHazelcastInstance(createConfig(MEMBER_2), "node2", new FirewallingNodeContext()),
-            newHazelcastInstance(createConfig(MEMBER_3), "node3", new FirewallingNodeContext()),
-            newHazelcastInstance(createConfig(MEMBER_4), "node4", new FirewallingNodeContext())
+            newHazelcastInstance(createConfig(MEMBER_3), "node3", new FirewallingNodeContext())
     );
 
     private final HazelcastInstance nodeToIsolate = nodes.get(2);
 
     private static Config createConfig(String member) {
-        Config config = new ClasspathXmlConfig("hazelcast.xml"); //Config();
+        Config config = new ClasspathXmlConfig("hazelcast_ex1.xml"); //Config();
         NetworkConfig network = config.getNetworkConfig();
         network.setPortAutoIncrement(false);
         network.setPort(Integer.parseInt(member.split(":")[1]));
 
         JoinConfig join = network.getJoin();
         join.getMulticastConfig().setEnabled(false);
-        join.getTcpIpConfig().setEnabled(true).setMembers(List.of(MEMBER_1, MEMBER_2, MEMBER_3, MEMBER_4));
+        join.getTcpIpConfig().setEnabled(true).setMembers(List.of(MEMBER_1, MEMBER_2, MEMBER_3));
 
         return config;
     }

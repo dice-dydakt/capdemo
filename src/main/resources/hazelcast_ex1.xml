@@ -15,8 +15,12 @@
         <port auto-increment="true" port-count="100">5701</port>
     </network>
 
+    <properties>
+        <property name="hazelcast.logging.type">log4j2</property>
+    </properties>
+
     <cp-subsystem>
-        <cp-member-count>4</cp-member-count>
+        <cp-member-count>3</cp-member-count>
         <group-size>3</group-size>
         <session-time-to-live-seconds>300</session-time-to-live-seconds>
         <session-heartbeat-interval-seconds>5</session-heartbeat-interval-seconds>
