@@ -66,7 +66,7 @@ public class CPDemo {
   public void run() {
     Scanner scanner = new Scanner(System.in);
     while (true) {
-      System.out.println("Enter 'partition' to simulate a network partition, 'heal' to restore, or 'exit' to quit:");
+      System.out.println("Enter 'partition' to simulate a network partition, 'heal' to restore,\n get/add:(nodeNumber) get/increase value of AtomicVariable from node, or 'exit' to quit:");
       String input = scanner.nextLine();
 
       if ("exit".equalsIgnoreCase(input)) {
@@ -74,7 +74,7 @@ public class CPDemo {
       } else if ("partition".equalsIgnoreCase(input)) {
         // For demonstration purposes, isolating node3 from node1 and node2.
         partition();
-//        System.out.println("Network partition emulated. Node 3 is isolated from Node 1, and 2.");
+        System.out.println("Network partition emulated. All nodes are isolated");
       } else if ("heal".equalsIgnoreCase(input)) {
         // Resetting the configurations to heal the partition.
         heal();
