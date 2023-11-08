@@ -1,6 +1,6 @@
 # CAP demo lab
 
-##CAP introduction:
+## CAP introduction:
 CAP theory, also known as the CAP theorem or Brewer's theorem, is a fundamental concept in
 distributed computing that was formulated by computer scientist Eric Brewer in 2000.
 It states that in a distributed system, you can achieve at most two out of three desirable
@@ -13,7 +13,7 @@ specific requirements and constraints.
 
 ![img.png](img.png)
 
-##Hazelcast:
+## Hazelcast:
 Hazelcast is realtime data platform. It provides data structures that enable the construction
 of distributed systems, ensuring AP or CP guarantees from the CAP theory. 
 (CA is not considered as hazelcast focuses on distributed systems, where partition tolerance is crucial)
@@ -24,7 +24,7 @@ GitHub: https://github.com/hazelcast/hazelcast
 Documentation: https://docs.hazelcast.com/hazelcast/5.3/
 
 
-##Exercises:
+## Exercises:
 
 ### CPSubsystem:
 CPSubsystem is a part of Hazelcast that enables user to create a CP cluster with datastructures 
@@ -52,7 +52,7 @@ Configuration used in exercise 1:
 
 More info about CPSubsytem: https://docs.hazelcast.com/hazelcast/5.3/cp-subsystem/cp-subsystem
 
-###Scenario:
+### Scenario:
 All exercises create cluster with 3 nodes. The goal of the task is to find out how cluster behaves
 when a network partitioning occurs. The partitioning is simulated with ``hazelcast.test``  package.
 It exposes a new way to create hazelcast instances with firewalling capabilities.
@@ -60,7 +60,9 @@ To isolate nodes from each other we use function SplitBrainTestSupport.blockComm
 which applies firewall between them.
 
 
-###Exercise 1:
+
+
+### Exercise 1:
 
 First and second exercise are focused on CP guarantee. In these cases all 3 nodes are in single group of a CPSubsystem.
 In order to demonstrate behaviour of the cluster we will use variable of type: ``AtomicLong`` from the CPSubsytem.
@@ -85,11 +87,11 @@ Steps:
 - heal the network partition 
 - check what happened with ``AtomicLong`` afterwards
 
-####Question:
+#### Question:
 Explain if and why you were (not) able to get/increase value of ``AtomicLong`` in each step on particular nodes.
 
 
-###Exercise 2:
+### Exercise 2:
 
 This exercise is similar to exercise1. The only difference is that we isolate each node which
 causes lack of communication in the cluster.
@@ -108,10 +110,10 @@ Steps:
 problems with achieving nodes agreement)
 - check what happened with ``AtomicLong`` afterwards
 
-####Question:
+#### Question:
 Explain if and why you were (not) able to get/increase value of ``AtomicLong`` in each step on particular nodes.
 
-###Exercise 3:
+### Exercise 3:
 
 This exercise are focused on AP guarantee. To demonstrate behaviour of the cluster we will use variable of type:
 ``PNCounter`` from the Hazelcast instance. ``PNCounter`` sacrifices consistency in favour of availability.
@@ -135,7 +137,7 @@ Steps:
 - heal the network partition
 - check what happened with ``PNCounter`` afterwards
 
-####Question:
+#### Question:
 Explain if and why you were (not) able to get/increase value of ``PNCounter`` in each step on particular nodes.
 
 

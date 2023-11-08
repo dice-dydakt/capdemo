@@ -25,7 +25,6 @@ public class CPDemo {
     newHazelcastInstance(createConfig(MEMBER_3), "node3", new FirewallingNodeContext())
   );
 
-//  private final List<HazelcastInstance> nodesToIsolate = List.of(nodes.get(2));
 
   private static Config createConfig(String member) {
     Config config = new ClasspathXmlConfig("hazelcast_ex2.xml"); //Config();
@@ -72,7 +71,7 @@ public class CPDemo {
       if ("exit".equalsIgnoreCase(input)) {
         break;
       } else if ("partition".equalsIgnoreCase(input)) {
-        // For demonstration purposes, isolating node3 from node1 and node2.
+        // For demonstration purposes, isolating all nodes from each other.
         partition();
         System.out.println("Network partition emulated. All nodes are isolated");
       } else if ("heal".equalsIgnoreCase(input)) {
@@ -87,7 +86,6 @@ public class CPDemo {
       } else if (input.startsWith("get")) {
         new Thread(() -> {
           System.out.println(getAtomicVariableReference(input).get());
-//          System.out.println(nodes.get(instanceIdx).getCPSubsystem());
         }).start();
       }
     }
@@ -97,7 +95,6 @@ public class CPDemo {
 
   private IAtomicLong getAtomicVariableReference(String input) {
     var instanceIdx = Integer.parseInt(input.split(":")[1]);
-//    System.out.println(nodes.get(instanceIdx).getCPSubsystem().getCP);
     return nodes.get(instanceIdx).getCPSubsystem().getAtomicLong("test");
 
   }

@@ -43,7 +43,6 @@ public class APDemo {
 
   final HazelcastInstance instance = Hazelcast.newHazelcastInstance();
   final PNCounter counter = instance.getPNCounter("counter");
-  final long value = counter.get();
 
   private void partition(HazelcastInstance instanceToIsolate) {
     nodes.stream()
