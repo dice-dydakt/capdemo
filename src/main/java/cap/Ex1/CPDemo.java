@@ -61,7 +61,7 @@ public class CPDemo {
   public void run() {
     Scanner scanner = new Scanner(System.in);
     while (true) {
-      System.out.println("Enter 'partition' to simulate a network partition, 'heal' to restore,\n get/add:(nodeNumber) get/increase value of AtomicVariable from node, or 'exit' to quit:");
+      System.out.println("Enter:\n- 'partition' to simulate a network partition\n- 'heal' to restore\n- 'get/add:<nodeNumber>' to get/increase value of AtomicVariable from node\n- 'exit' to quit");
       String input = scanner.nextLine();
 
       if ("exit".equalsIgnoreCase(input)) {
