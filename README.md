@@ -52,17 +52,20 @@ Configuration used in exercise 1:
 
 More info about CPSubsytem: https://docs.hazelcast.com/hazelcast/5.3/cp-subsystem/cp-subsystem
 
-
-####Exercise1:
-
-#####Scenario:
-
-First and second exercise are focused on CP guarantee. It creates cluster with 3 nodes
-which are in single group at start. The goal of the task is to find out how cluster behaves
+###Scenario:
+All exercises create cluster with 3 nodes. The goal of the task is to find out how cluster behaves
 when a network partitioning occurs. The partitioning is simulated with ``hazelcast.test``  package.
-It exposes a new way to create hazelcast instances with firewalling capabilities. 
+It exposes a new way to create hazelcast instances with firewalling capabilities.
 To isolate nodes from each other we use function SplitBrainTestSupport.blockCommunicationBetween()
 which applies firewall between them.
+
+
+###Exercise 1:
+
+First and second exercise are focused on CP guarantee. In these cases all 3 nodes are in single group of a CPSubsystem.
+In order to demonstrate behaviour of the cluster we will use variable of type: ``AtomicLong`` from the CPSubsytem.
+
+https://docs.hazelcast.com/imdg/4.2/data-structures/iatomiclong
 
 In this exercise we want to isolate 1 node from others as it is shown on the diagram below.
 
@@ -72,27 +75,67 @@ In this exercise we want to isolate 1 node from others as it is shown on the dia
 Steps:
 
 - Start the example in Ex1 package
-- using the command prompt  with provided functions to perform the steps below
-- get the value of the atomic variable (it should return 0)
-- increase value of atomic variable on one node and check if other nodes see change
+- use the command prompt with provided functions to perform the steps below
+- get the value of the ``AtomicLong`` (it should return 0)
+- increase value of ``AtomicLong`` on one node and check if other nodes see the change
 - partition network 
 - check if you can retrieve the variable from isolated node
 - check if you can retrieve the variable from other nodes
-- try to increase value of atomic variable from both sides of network partition (what happens?)
+- try to increase value of ``AtomicLong`` from both sides of network partition (what happens?)
 - heal the network partition 
-- check what happened with atomic variable afterwards.
+- check what happened with ``AtomicLong`` afterwards
 
-TODO - consider asking students for explanation.
+####Question:
+Explain if and why you were (not) able to get/increase value of ``AtomicLong`` in each step on particular nodes.
 
 
+###Exercise 2:
+
+This exercise is similar to exercise1. The only difference is that we isolate each node which
+causes lack of communication in the cluster.
+
+![img_3.png](img_3.png)
+
+Steps:
+
+- Start the example in Ex2 package
+- use the command prompt with provided functions to perform the steps below
+- get the value of the ``AtomicLong`` on different nodes (it should return 0)
+- increase value of ``AtomicLong`` on one node and check if other nodes see the change
+- partition network
+- check if you can retrieve the variable or increase its value from any isolated node
+- heal the network partition (in this case healing partition can take some time due to 
+problems with achieving nodes agreement)
+- check what happened with ``AtomicLong`` afterwards
+
+####Question:
+Explain if and why you were (not) able to get/increase value of ``AtomicLong`` in each step on particular nodes.
+
+###Exercise 3:
+
+This exercise are focused on AP guarantee. To demonstrate behaviour of the cluster we will use variable of type:
+``PNCounter`` from the Hazelcast instance. ``PNCounter`` sacrifices consistency in favour of availability.
+
+https://docs.hazelcast.com/imdg/4.2/data-structures/pn-counter
+
+We will use same partitioning as in exercise 1 (isolating only one node) 
+but we will not create any CPSubsystem nor node group.
 
 
-Build:
-```
-mvn clean compile
-```
+Steps:
 
-Run:
-```
-mvn exec:java
-```
+- Start the example in Ex3 package
+- use the command prompt with provided functions to perform the steps below
+- get the value of the ``PNCounter`` (it should return 0)
+- increase value of ``PNCounter`` on one node and check if other nodes see the change
+- partition network
+- check if you can retrieve the variable from isolated node
+- check if you can retrieve the variable from other nodes
+- try to increase value of ``PNCounter`` from both sides of network partition (what happens?)
+- heal the network partition
+- check what happened with ``PNCounter`` afterwards
+
+####Question:
+Explain if and why you were (not) able to get/increase value of ``PNCounter`` in each step on particular nodes.
+
+

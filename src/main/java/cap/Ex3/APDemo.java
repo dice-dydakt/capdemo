@@ -6,7 +6,6 @@ import com.hazelcast.config.JoinConfig;
 import com.hazelcast.config.NetworkConfig;
 import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.cp.IAtomicLong;
 import com.hazelcast.crdt.pncounter.PNCounter;
 import com.hazelcast.instance.FirewallingNodeContext;
 import com.hazelcast.test.SplitBrainTestSupport;
