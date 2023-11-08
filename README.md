@@ -11,7 +11,7 @@ tolerance ensures the system continues to operate despite network partitions or 
 The CAP theorem helps system designers make trade-offs in distributed systems to meet their
 specific requirements and constraints.
 
-![img.png](img.png)
+![img.png](images/img.png)
 
 ## Hazelcast:
 Hazelcast is realtime data platform. It provides data structures that enable the construction
@@ -48,7 +48,7 @@ For example, in a CP group of five CP members, operations are committed when the
 to at least three CP members. This CP group can tolerate the failure of two CP members and remain available.
 
 Configuration used in exercise 1:
-![img_1.png](img_1.png)
+![img_1.png](images/img_1.png)
 
 More info about CPSubsytem: https://docs.hazelcast.com/hazelcast/5.3/cp-subsystem/cp-subsystem
 
@@ -83,7 +83,7 @@ https://docs.hazelcast.com/imdg/4.2/data-structures/iatomiclong
 
 In this exercise we want to isolate 1 node from others as it is shown on the diagram below.
 
-![img_2.png](img_2.png)
+![img_2.png](images/img_2.png)
 
 
 Steps:
@@ -108,7 +108,7 @@ Explain if and why you were (not) able to get/increase value of ``AtomicLong`` i
 This exercise is similar to exercise1. The only difference is that we isolate each node which
 causes lack of communication in the cluster.
 
-![img_3.png](img_3.png)
+![img_3.png](images/img_3.png)
 
 Steps:
 
