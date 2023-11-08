@@ -59,6 +59,18 @@ It exposes a new way to create hazelcast instances with firewalling capabilities
 To isolate nodes from each other we use function SplitBrainTestSupport.blockCommunicationBetween()
 which applies firewall between them.
 
+Hazelcast supports logging of operations  currently performed in the cluster. We dacided
+to put logs into log/hazelcast.log file to make the command prompt more readable.
+(configuration of logging is accessible in resources/log4j2.properties file) 
+
+To view the logs in real time you can use linux command:
+
+```
+less log/hazelcast.log
+``` 
+
+And then pres shift+f to set auto refresh.
+
 
 
 
