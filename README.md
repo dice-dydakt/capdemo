@@ -15,7 +15,7 @@ specific requirements and constraints.
 
 ## Hazelcast:
 Hazelcast is realtime data platform. It provides data structures that enable the construction
-of distributed systems, ensuring AP or CP guarantees from the CAP theory. 
+of distributed systems, [ensuring AP or CP guarantees](https://docs.hazelcast.com/hazelcast/5.3/architecture/architecture#apcp) from the CAP theory. 
 (CA is not considered as hazelcast focuses on distributed systems, where partition tolerance is crucial)
 
 
