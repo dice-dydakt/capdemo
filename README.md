@@ -48,6 +48,7 @@ For example, in a CP group of five CP members, operations are committed when the
 to at least three CP members. This CP group can tolerate the failure of two CP members and remain available.
 
 Configuration used in exercise 1:
+
 ![img_1.png](images/img_1.png)
 
 More info about CPSubsytem: https://docs.hazelcast.com/hazelcast/5.3/cp-subsystem/cp-subsystem
@@ -58,6 +59,12 @@ when a network partitioning occurs. The partitioning is simulated with ``hazelca
 It exposes a new way to create hazelcast instances with firewalling capabilities.
 To isolate nodes from each other we use function SplitBrainTestSupport.blockCommunicationBetween()
 which applies firewall between them.
+
+### How to run:
+1. Install maven
+2. Run `mvn exec:java@ex1`, `mvn exec:java@ex2` or `mvn exec:java@ex3` depending on the exercise
+
+### Viewing logs
 
 Hazelcast supports logging of operations  currently performed in the cluster. We dacided
 to put logs into log/hazelcast.log file to make the command prompt more readable.
@@ -79,7 +86,7 @@ And then pres shift+f to set auto refresh.
 First and second exercise are focused on CP guarantee. In these cases all 3 nodes are in single group of a CPSubsystem.
 In order to demonstrate behaviour of the cluster we will use variable of type: ``AtomicLong`` from the CPSubsytem.
 
-https://docs.hazelcast.com/imdg/4.2/data-structures/iatomiclong
+https://docs.hazelcast.com/hazelcast/5.3/data-structures/iatomiclong
 
 In this exercise we want to isolate 1 node from others as it is shown on the diagram below.
 
@@ -130,7 +137,7 @@ Explain if and why you were (not) able to get/increase value of ``AtomicLong`` i
 This exercise are focused on AP guarantee. To demonstrate behaviour of the cluster we will use variable of type:
 ``PNCounter`` from the Hazelcast instance. ``PNCounter`` sacrifices consistency in favour of availability.
 
-https://docs.hazelcast.com/imdg/4.2/data-structures/pn-counter
+https://docs.hazelcast.com/hazelcast/5.3/data-structures/pn-counter
 
 We will use same partitioning as in exercise 1 (isolating only one node) 
 but we will not create any CPSubsystem nor node group.
