@@ -65,7 +65,7 @@ public class CPDemo {
   public void run() {
     Scanner scanner = new Scanner(System.in);
     while (true) {
-      System.out.println("Enter:\n- 'partition' to simulate a network partition\n- 'heal' to restore\n- 'get/add:<nodeNumber>' to get/increase value of AtomicVariable from node\n- 'exit' to quit");
+      System.out.println("Enter:\n- 'partition' to simulate a network partition\n- 'heal' to restore\n- 'get/add:<nodeNumber>' to get/increase value of AtomicVariable from node\n- 'getAll' to get value of AtomicVariable on all nodes\n- 'exit' to quit");
       String input = scanner.nextLine();
 
       if ("exit".equalsIgnoreCase(input)) {
@@ -79,13 +79,24 @@ public class CPDemo {
         heal();
         System.out.println("Network partition healed. All nodes can communicate now.");
       } else if (input.startsWith("add")) {
+        var instanceIdx = getInstanceIndex(input);
         new Thread(() -> {
-          var atomicVariable = getAtomicVariableReference(input);
-          System.out.println(atomicVariable.addAndGet(1));
+          var atomicVariable = getAtomicVariableReference(instanceIdx);
+          System.out.printf("Add on node %d, value: %d%n", instanceIdx + 1, atomicVariable.addAndGet(1));
         }).start();
+      } else if (input.startsWith("getAll")) {
+        for (int i=0; i<3; i++) {
+          var instanceIdx = i;
+          new Thread(() -> {
+            var atomicVariable = getAtomicVariableReference(instanceIdx);
+            System.out.printf("Get on node %d, value: %d%n", instanceIdx + 1, atomicVariable.get());
+          }).start();
+        }
       } else if (input.startsWith("get")) {
+        var instanceIdx = getInstanceIndex(input);
         new Thread(() -> {
-          System.out.println(getAtomicVariableReference(input).get());
+          var atomicVariable = getAtomicVariableReference(instanceIdx);
+          System.out.printf("Get on node %d, value %d%n", instanceIdx + 1, atomicVariable.get());
         }).start();
       }
     }
@@ -93,11 +104,14 @@ public class CPDemo {
     nodes.forEach(HazelcastInstance::shutdown);
   }
 
-  private IAtomicLong getAtomicVariableReference(String input) {
-    var instanceIdx = Integer.parseInt(input.split(":")[1]);
-    return nodes.get(instanceIdx).getCPSubsystem().getAtomicLong("test");
-
+  private int getInstanceIndex(String input) {
+    return Integer.parseInt(input.split(":")[1]) - 1;
   }
+
+  private IAtomicLong getAtomicVariableReference(int instanceIdx) {
+    return nodes.get(instanceIdx).getCPSubsystem().getAtomicLong("test");
+  }
+
 
   public static void main(String[] args) {
     new cap.Ex2.CPDemo().run();

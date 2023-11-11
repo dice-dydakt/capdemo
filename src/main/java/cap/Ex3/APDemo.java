@@ -65,7 +65,7 @@ public class APDemo {
   public void run() {
     Scanner scanner = new Scanner(System.in);
     while (true) {
-      System.out.println("Enter:\n- 'partition' to simulate a network partition\n- 'heal' to restore\n- 'get/add:<nodeNumber>' to get/increase value of AtomicVariable from node\n- 'exit' to quit");
+      System.out.println("Enter:\n- 'partition' to simulate a network partition\n- 'heal' to restore\n- 'get/add:<nodeNumber>' to get/increase value of PNCounter from node\n- 'getAll' to get value of PNCounter on all nodes\n- 'exit' to quit");
       String input = scanner.nextLine();
 
       if ("exit".equalsIgnoreCase(input)) {
@@ -79,13 +79,24 @@ public class APDemo {
         heal(nodeToIsolate);
         System.out.println("Network partition healed. All nodes can communicate now.");
       } else if (input.startsWith("add")) {
+        var instanceIdx = getInstanceIndex(input);
         new Thread(() -> {
-          var pnCounter = getPNCounterReference(input);
-          System.out.println(pnCounter.addAndGet(1));
+          var pnCounter = getPNCounterReference(instanceIdx);
+          System.out.printf("Add on node %d, value: %d%n", instanceIdx + 1, pnCounter.addAndGet(1));
         }).start();
+      } else if (input.startsWith("getAll")) {
+        for (int i=0; i<3; i++) {
+          var instanceIdx = i;
+          new Thread(() -> {
+            var pnCounter = getPNCounterReference(instanceIdx);
+            System.out.printf("Get on node %d, value %d%n", instanceIdx + 1, pnCounter.get());
+          }).start();
+        }
       } else if (input.startsWith("get")) {
+        var instanceIdx = getInstanceIndex(input);
         new Thread(() -> {
-          System.out.println(getPNCounterReference(input).get());
+          var pnCounter = getPNCounterReference(instanceIdx);
+          System.out.printf("Get on node %d, value %d%n", instanceIdx + 1, pnCounter.get());
         }).start();
       }
     }
@@ -93,12 +104,13 @@ public class APDemo {
     nodes.forEach(HazelcastInstance::shutdown);
   }
 
-  private PNCounter getPNCounterReference(String input) {
-    var instanceIdx = Integer.parseInt(input.split(":")[1]);
-    return nodes.get(instanceIdx).getPNCounter("test");
+  private int getInstanceIndex(String input) {
+    return Integer.parseInt(input.split(":")[1]) - 1;
   }
 
-
+  private PNCounter getPNCounterReference(int instanceIdx) {
+    return nodes.get(instanceIdx).getPNCounter("test");
+  }
 
   public static void main(String[] args) {
     new cap.Ex3.APDemo().run();
