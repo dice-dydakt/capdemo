@@ -85,7 +85,7 @@ To view the logs in real time you can use linux command:
 less log/hazelcast.log
 ``` 
 
-And then pres shift+f to set auto refresh. You can use also command ``tail -f``
+And then pres shift+f to set auto refresh. You can use also command ``tail -f log/hazelcast.log``
 
 
 
