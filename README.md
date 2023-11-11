@@ -11,7 +11,7 @@ tolerance ensures the system continues to operate despite network partitions or 
 The CAP theorem helps system designers make trade-offs in distributed systems to meet their
 specific requirements and constraints.
 
-![img.png](images/img.png)
+<img src="images/img.png" alt="img" style="width:400px;"/>
 
 ## Hazelcast:
 Hazelcast is realtime data platform. It provides data structures that enable the construction
@@ -49,7 +49,16 @@ to at least three CP members. This CP group can tolerate the failure of two CP m
 
 Configuration used in exercise 1:
 
-![img_1.png](images/img_1.png)
+```
+    <cp-subsystem>
+        <cp-member-count>3</cp-member-count>
+        <group-size>3</group-size>
+        <session-time-to-live-seconds>300</session-time-to-live-seconds>
+        <session-heartbeat-interval-seconds>5</session-heartbeat-interval-seconds>
+        <missing-cp-member-auto-removal-seconds>14400</missing-cp-member-auto-removal-seconds>
+        <fail-on-indeterminate-operation-state>false</fail-on-indeterminate-operation-state>
+    </cp-subsystem>
+```
 
 More info about CPSubsytem: https://docs.hazelcast.com/hazelcast/5.3/cp-subsystem/cp-subsystem
 
@@ -76,7 +85,7 @@ To view the logs in real time you can use linux command:
 less log/hazelcast.log
 ``` 
 
-And then pres shift+f to set auto refresh.
+And then pres shift+f to set auto refresh. You can use also command ``tail -f``
 
 
 
