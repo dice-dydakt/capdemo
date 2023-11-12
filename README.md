@@ -2,6 +2,7 @@
 
 The goal of this lab is to teach the following concepts:
 - [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem)
+- Consistency, Availability, Partition Tolerance
 - Eventual consistency
 - [CRDT data structures](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type)
 
@@ -171,4 +172,9 @@ Steps:
 #### Question:
 Explain if and why you were/were not able to get/increase the value of ``PNCounter`` in each step on particular nodes.
 
+## Assignment
+
+Submit a report that explains the following:
+- (3p) Answer the questions found above in the description of Exercises 1,2,3.
+- (2p) Which data structures -- AP or CP -- require the Raft algorith? Why is this algorithm needed?  
 
