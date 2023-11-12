@@ -176,5 +176,6 @@ Explain if and why you were/were not able to get/increase the value of ``PNCount
 
 Submit a report that explains the following:
 - (3p) Answer the questions found above in the description of Exercises 1,2,3.
-- (2p) Which data structures -- AP or CP -- require the Raft algorith? Why is this algorithm needed?  
+- (2p) Which data structures -- AP or CP -- require the Raft algorith? Why is this algorithm needed?
+- (2p) Read article [_Session Guarantees for Weakly Consistent Replicated Data_](https://www.cs.utexas.edu/users/lorenzo/corsi/cs380d/papers/SessionGuaranteesBayou.pdf) and explain what it means that the PN Counter in Hazelcast provides _Read-Your-Writes_ (RYW) and _Monotonic reads_ guarantees and why they are _session guarantees_.  
 
