@@ -3,7 +3,7 @@
 The goal of this lab is to teach the following concepts:
 - [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem)
 - Consistency, Availability, Partition Tolerance
-- Eventual consistency
+- Eventual consistency, weak data consistency guarantees
 - [CRDT data structures](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type)
 
 ## CAP introduction:
