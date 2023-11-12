@@ -1,4 +1,9 @@
-# CAP demo lab
+# CAP lab exercise
+
+The goal of this lab is to teach the following concepts:
+- [CAP theorem](https://en.wikipedia.org/wiki/CAP_theorem)
+- Eventual consistency
+- [CRDT data structures](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type)
 
 ## CAP introduction:
 CAP theory, also known as the CAP theorem or Brewer's theorem, is a fundamental concept in
@@ -27,22 +32,19 @@ Documentation: https://docs.hazelcast.com/hazelcast/5.3/
 ## Exercises:
 
 ### CPSubsystem:
-CPSubsystem is a part of Hazelcast that enables user to create a CP cluster with datastructures 
-following this guarantee. 
-
-In CPSubsystem Hazelcast uses Raft algorithm to reach consensus between nodes in cluster. Subsystem 
+CPSubsystem is a part of Hazelcast that enables user to create a CP cluster with strongly consistent data structures. 
+In CPSubsystem Hazelcast uses Raft algorithm to reach consensus between nodes in cluster. The subsystem 
 is described and modified by several variables which change the behaviour of the cluster. The most important are:
 
 
-- cp-member-count - describes total number of nodes in cluster
+- cp-member-count - describes the total number of nodes in cluster
 - group-size - describes the number of nodes participating in reaching consensus over state of the cluster.
-  An odd number of CP members in a group is more advantageous to an even number because of the quorum or majority calculations.
+  It is an odd number, which is better than an event number due to quorum or majority calculations.
 
 For a CP group of N members:
 
-- the majority of members is calculated as (N + 1) / 2.
-
-- the number of failing members you wish to tolerate is calculated as (N - 1) / 2.
+- the majority of members is calculated as `(N + 1) / 2`.
+- the number of failing members that can be tolerated is calculated as `(N - 1) / 2`.
 
 For example, in a CP group of five CP members, operations are committed when they are replicated
 to at least three CP members. This CP group can tolerate the failure of two CP members and remain available.
@@ -63,41 +65,42 @@ Configuration used in exercise 1:
 More info about CPSubsytem: https://docs.hazelcast.com/hazelcast/5.3/cp-subsystem/cp-subsystem
 
 ### Scenario:
-All exercises create cluster with 3 nodes. The goal of the task is to find out how cluster behaves
-when a network partitioning occurs. The partitioning is simulated with ``hazelcast.test``  package.
-It exposes a new way to create hazelcast instances with firewalling capabilities.
-To isolate nodes from each other we use function SplitBrainTestSupport.blockCommunicationBetween()
+All exercises create a cluster with 3 nodes. The goal of the lab is to find out how the cluster behaves
+when a network partitioning occurs. The partitioning is simulated with the ``hazelcast.test``  package
+which provides a new way to create hazelcast instances with firewalling capabilities.
+To isolate nodes from each other we use function `SplitBrainTestSupport.blockCommunicationBetween()`
 which applies firewall between them.
 
 ### How to run:
 1. Install maven
-2. Run `mvn exec:java@ex1`, `mvn exec:java@ex2` or `mvn exec:java@ex3` depending on the exercise
+2. Build with `mvn compile`
+3. Run `mvn exec:java@ex1`, `mvn exec:java@ex2` or `mvn exec:java@ex3` depending on the exercise
 
 ### Viewing logs
 
-Hazelcast supports logging of operations  currently performed in the cluster. We dacided
-to put logs into log/hazelcast.log file to make the command prompt more readable.
-(configuration of logging is accessible in resources/log4j2.properties file) 
+Hazelcast supports logging of operations  currently performed in the cluster. The programs
+generate logs into `log/hazelcast.log` to make the command prompt more readable.
+(configuration of logging is accessible in `resources/log4j2.properties` file) 
 
 To view the logs in real time you can use linux command:
 
 ```
-less log/hazelcast.log
+tail -f log/hazelcast.log
 ``` 
 
-And then pres shift+f to set auto refresh. You can use also command ``tail -f log/hazelcast.log``
+
 
 
 
 
 ### Exercise 1:
 
-First and second exercise are focused on CP guarantee. In these cases all 3 nodes are in single group of a CPSubsystem.
-In order to demonstrate behaviour of the cluster we will use variable of type: ``AtomicLong`` from the CPSubsytem.
+Exercises 1 and 2 are focused on CP guarantees. All 3 nodes of the cluster are in a single group of a CPSubsystem.
+In order to demonstrate the behavior of the cluster we will use variable of type: ``AtomicLong`` from the CPSubsytem.
 
 https://docs.hazelcast.com/hazelcast/5.3/data-structures/iatomiclong
 
-In this exercise we want to isolate 1 node from others as it is shown on the diagram below.
+In this exercise we isolate one node from others as it is shown on the diagram below.
 
 ![img_2.png](images/img_2.png)
 
@@ -108,20 +111,20 @@ Steps:
 - use the command prompt with provided functions to perform the steps below
 - get the value of the ``AtomicLong`` (it should return 0)
 - increase value of ``AtomicLong`` on one node and check if other nodes see the change
-- partition network 
-- check if you can retrieve the variable from isolated node
+- initiate a network partition  
+- check if you can retrieve the variable from the isolated node
 - check if you can retrieve the variable from other nodes
-- try to increase value of ``AtomicLong`` from both sides of network partition (what happens?)
+- try to increase the value of ``AtomicLong`` from both sides of the network partition (what happens?)
 - heal the network partition 
-- check what happened with ``AtomicLong`` afterwards
+- check what happened with the ``AtomicLong`` values on all nodes (healing may take some time)
 
 #### Question:
-Explain if and why you were (not) able to get/increase value of ``AtomicLong`` in each step on particular nodes.
+Explain if and why you were/were not able to get/increase the value of ``AtomicLong`` in each step on particular nodes.
 
 
 ### Exercise 2:
 
-This exercise is similar to exercise1. The only difference is that we isolate each node which
+This exercise is similar to Exercise 1, however, in this case we isolate all nodes which
 causes lack of communication in the cluster.
 
 ![img_3.png](images/img_3.png)
@@ -132,40 +135,40 @@ Steps:
 - use the command prompt with provided functions to perform the steps below
 - get the value of the ``AtomicLong`` on different nodes (it should return 0)
 - increase value of ``AtomicLong`` on one node and check if other nodes see the change
-- partition network
+- inititate a network partition
 - check if you can retrieve the variable or increase its value from any isolated node
 - heal the network partition (in this case healing partition can take some time due to 
 problems with achieving nodes agreement)
-- check what happened with ``AtomicLong`` afterwards
+- check what happened with ``AtomicLong`` values on all nodes afterwards
 
 #### Question:
-Explain if and why you were (not) able to get/increase value of ``AtomicLong`` in each step on particular nodes.
+Explain if and why you were/were not able to get/increase the value of ``AtomicLong`` in each step on particular nodes.
 
 ### Exercise 3:
 
-This exercise are focused on AP guarantee. To demonstrate behaviour of the cluster we will use variable of type:
-``PNCounter`` from the Hazelcast instance. ``PNCounter`` sacrifices consistency in favour of availability.
+This exercise is focused on the AP guarantees. To demonstrate the behavior of the cluster we will use variable of type:
+``PNCounter`` from the Hazelcast instance. ``PNCounter`` is a [CRDT data structure](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type) which provides eventual consistency. In other words, it sacrifices strong consistency in favour of availability.
 
 https://docs.hazelcast.com/hazelcast/5.3/data-structures/pn-counter
 
 We will use same partitioning as in exercise 1 (isolating only one node) 
-but we will not create any CPSubsystem nor node group.
+but we will not create the CPSubsystem or node group.
 
 
 Steps:
 
-- Start the example in Ex3 package
+- Start the example in the Ex3 package
 - use the command prompt with provided functions to perform the steps below
 - get the value of the ``PNCounter`` (it should return 0)
 - increase value of ``PNCounter`` on one node and check if other nodes see the change
-- partition network
-- check if you can retrieve the variable from isolated node
+- initiate a network partition
+- check if you can retrieve the variable from the isolated node
 - check if you can retrieve the variable from other nodes
-- try to increase value of ``PNCounter`` from both sides of network partition (what happens?)
+- try to increase value of ``PNCounter`` from both sides of the network partition (what happens?)
 - heal the network partition
-- check what happened with ``PNCounter`` afterwards
+- check what happened with the ``PNCounter`` values on all nodes afterwards
 
 #### Question:
-Explain if and why you were (not) able to get/increase value of ``PNCounter`` in each step on particular nodes.
+Explain if and why you were/were not able to get/increase the value of ``PNCounter`` in each step on particular nodes.
 
 
