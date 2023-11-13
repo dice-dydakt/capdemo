@@ -85,13 +85,13 @@ public class APDemo {
           System.out.printf("Add on node %d, value: %d%n", instanceIdx + 1, pnCounter.addAndGet(1));
         }).start();
       } else if (input.startsWith("getAll")) {
-        for (int i=0; i<3; i++) {
-          var instanceIdx = i;
-          new Thread(() -> {
+        new Thread(() -> {
+          for (int i=0; i<3; i++) {
+            var instanceIdx = i;
             var pnCounter = getPNCounterReference(instanceIdx);
             System.out.printf("Get on node %d, value %d%n", instanceIdx + 1, pnCounter.get());
-          }).start();
-        }
+          }
+        }).start();
       } else if (input.startsWith("get")) {
         var instanceIdx = getInstanceIndex(input);
         new Thread(() -> {
