@@ -7,15 +7,16 @@ The goal of this lab is to teach the following concepts:
 - [CRDT data structures](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type)
 
 ## CAP introduction:
-CAP theory, also known as the CAP theorem or Brewer's theorem, is a fundamental concept in
-distributed computing that was formulated by computer scientist Eric Brewer in 2000.
+CAP theorem, also known as Brewer's conjecture, is a fundamental concept in
+distributed computing that was formulated by a computer scientist Eric Brewer in 2000. 
 It states that in a distributed system, you can achieve at most two out of three desirable
-properties: Consistency, Availability, and Partition tolerance ([formal proof](https://users.ece.cmu.edu/~adrian/731-sp04/readings/GL-cap.pdf)). Consistency refers to all
-nodes in the system having the same data at the same time, Availability means that every
-request to the system gets a response (not necessarily the most up-to-date), and Partition
-tolerance ensures the system continues to operate despite network partitions or failures.
-The CAP theorem helps system designers make trade-offs in distributed systems to meet their
-specific requirements and constraints.
+properties: Consistency, Availability, and Partition tolerance 
+([formal proof](https://users.ece.cmu.edu/~adrian/731-sp04/readings/GL-cap.pdf)). 
+_Consistency_ refers to all nodes in the system having the same data at the same time, _Availability_ 
+means that every request to the system gets a response (not necessarily the most up-to-date), 
+while _Partition tolerance_ denotes the system's capability to continue the operation despite network 
+partitions or failures. The CAP theorem helps system designers make trade-offs in distributed systems 
+to meet their specific requirements and constraints.
 
 <img src="images/img.png" alt="img" style="width:400px;"/>
 
