@@ -10,7 +10,7 @@ The goal of this lab is to teach the following concepts:
 CAP theory, also known as the CAP theorem or Brewer's theorem, is a fundamental concept in
 distributed computing that was formulated by computer scientist Eric Brewer in 2000.
 It states that in a distributed system, you can achieve at most two out of three desirable
-properties: Consistency, Availability, and Partition tolerance. Consistency refers to all
+properties: Consistency, Availability, and Partition tolerance ([formal proof](https://users.ece.cmu.edu/~adrian/731-sp04/readings/GL-cap.pdf)). Consistency refers to all
 nodes in the system having the same data at the same time, Availability means that every
 request to the system gets a response (not necessarily the most up-to-date), and Partition
 tolerance ensures the system continues to operate despite network partitions or failures.
