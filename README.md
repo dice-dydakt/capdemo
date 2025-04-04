@@ -6,7 +6,7 @@ The goal of this lab is to teach the following concepts:
 - Eventual consistency, weak data consistency guarantees
 - [CRDT data structures](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type)
 
-## CAP introduction:
+## CAP introduction
 CAP theorem, also known as Brewer's conjecture, is a fundamental concept in
 distributed computing that was formulated by a computer scientist Eric Brewer in 2000. 
 It states that in a distributed system, you can achieve at most two out of three desirable
@@ -20,7 +20,7 @@ to meet their specific requirements and constraints.
 
 <img src="images/img.png" alt="img" style="width:400px;"/>
 
-## Hazelcast:
+## Hazelcast
 Hazelcast is realtime data platform. It provides data structures that enable the construction
 of distributed systems, [ensuring AP or CP guarantees](https://docs.hazelcast.com/hazelcast/5.3/architecture/architecture#apcp) from the CAP theory. 
 (CA is not considered as hazelcast focuses on distributed systems, where partition tolerance is crucial)
@@ -30,10 +30,7 @@ GitHub: https://github.com/hazelcast/hazelcast
 
 Documentation: https://docs.hazelcast.com/hazelcast/5.3/
 
-
-## Exercises:
-
-### CPSubsystem:
+### CPSubsystem
 CPSubsystem is a part of Hazelcast that enables user to create a CP cluster with strongly consistent data structures. 
 In CPSubsystem Hazelcast uses Raft algorithm to reach consensus between nodes in cluster. The subsystem 
 is described and modified by several variables which change the behaviour of the cluster. The most important are:
@@ -66,17 +63,24 @@ Configuration used in exercise 1:
 
 More info about CPSubsytem: https://docs.hazelcast.com/hazelcast/5.3/cp-subsystem/cp-subsystem
 
-### Scenario:
+## Scenarios
 All exercises create a cluster with 3 nodes. The goal of the lab is to find out how the cluster behaves
 when a network partitioning occurs. The partitioning is simulated with the ``hazelcast.test``  package
 which provides a new way to create hazelcast instances with firewalling capabilities.
 To isolate nodes from each other we use function `SplitBrainTestSupport.blockCommunicationBetween()`
 which applies firewall between them.
 
-### How to run:
+### How to run
 1. Install maven
 2. Build with `mvn compile`
 3. Run `mvn exec:java@ex1`, `mvn exec:java@ex2` or `mvn exec:java@ex3` depending on the exercise
+
+### Command line interface
+The examples provide a simple command-line interface to interact with:
+- `add:n` - increment the counter on node/replica `n` (n=1,2,3)
+- `getAll` - get value of the counter on all replicas
+- `partition` - start a partition
+- `heal` - heal the partition
 
 ### Viewing logs
 
@@ -89,13 +93,16 @@ To view the logs in real time you can use linux command:
 ```
 tail -f log/hazelcast.log
 ``` 
+### Observing the behavior
 
+In all exercises observe the behavior of the system by:
+- Incrementing the counter on all replicas
+- Observing the value on all replicas (`getAll`)
+- Starting a partition
+- Incrementing and observing the values again
+- Healing the partition and observing the values
 
-
-
-
-
-### Exercise 1:
+### Exercise 1
 
 Exercises 1 and 2 are focused on CP guarantees. All 3 nodes of the cluster are in a single group of a CPSubsystem.
 In order to demonstrate the behavior of the cluster we will use variable of type: ``AtomicLong`` from the CPSubsytem.
@@ -124,9 +131,9 @@ Steps:
 Explain if and why you were/were not able to get/increase the value of ``AtomicLong`` in each step on particular nodes.
 
 
-### Exercise 2:
+### Exercise 2
 
-This exercise is similar to Exercise 1, however, in this case we isolate all nodes which
+This example is similar to Example 1, however, in this case we isolate all nodes which
 causes lack of communication in the cluster.
 
 ![img_3.png](images/img_3.png)
@@ -146,7 +153,7 @@ problems with achieving nodes agreement)
 #### Question:
 Explain if and why you were/were not able to get/increase the value of ``AtomicLong`` in each step on particular nodes.
 
-### Exercise 3:
+### Exercise 3
 
 This exercise is focused on the AP guarantees. To demonstrate the behavior of the cluster we will use variable of type:
 ``PNCounter`` from the Hazelcast instance. ``PNCounter`` is a [CRDT data structure](https://en.wikipedia.org/wiki/Conflict-free_replicated_data_type) which provides eventual consistency. In other words, it sacrifices strong consistency in favour of availability.
