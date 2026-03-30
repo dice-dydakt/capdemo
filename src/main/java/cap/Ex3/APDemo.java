@@ -4,7 +4,6 @@ import com.hazelcast.config.ClasspathXmlConfig;
 import com.hazelcast.config.Config;
 import com.hazelcast.config.JoinConfig;
 import com.hazelcast.config.NetworkConfig;
-import com.hazelcast.core.Hazelcast;
 import com.hazelcast.core.HazelcastInstance;
 import com.hazelcast.crdt.pncounter.PNCounter;
 import com.hazelcast.instance.FirewallingNodeContext;
@@ -41,9 +40,6 @@ public class APDemo {
     return config;
   }
 
-  final HazelcastInstance instance = Hazelcast.newHazelcastInstance();
-  final PNCounter counter = instance.getPNCounter("counter");
-
   private void partition(HazelcastInstance instanceToIsolate) {
     nodes.stream()
       .filter(instance -> !instance.equals(instanceToIsolate))
@@ -79,25 +75,33 @@ public class APDemo {
         heal(nodeToIsolate);
         System.out.println("Network partition healed. All nodes can communicate now.");
       } else if (input.startsWith("add")) {
-        var instanceIdx = getInstanceIndex(input);
-        new Thread(() -> {
-          var pnCounter = getPNCounterReference(instanceIdx);
-          System.out.printf("Add on node %d, value: %d%n", instanceIdx + 1, pnCounter.addAndGet(1));
-        }).start();
-      } else if (input.startsWith("getAll")) {
-        new Thread(() -> {
-          for (int i=0; i<3; i++) {
-            var instanceIdx = i;
+        try {
+          var instanceIdx = getInstanceIndex(input);
+          new Thread(() -> {
             var pnCounter = getPNCounterReference(instanceIdx);
-            System.out.printf("Get on node %d, value %d%n", instanceIdx + 1, pnCounter.get());
-          }
-        }).start();
+            System.out.printf("Add on node %d, value: %d%n", instanceIdx + 1, pnCounter.addAndGet(1));
+          }).start();
+        } catch (IllegalArgumentException e) {
+          System.out.println("Error: " + e.getMessage());
+        }
+      } else if (input.startsWith("getAll")) {
+        for (int i=0; i<3; i++) {
+          var instanceIdx = i;
+          new Thread(() -> {
+            var pnCounter = getPNCounterReference(instanceIdx);
+            System.out.printf("Get on node %d, value: %d%n", instanceIdx + 1, pnCounter.get());
+          }).start();
+        }
       } else if (input.startsWith("get")) {
-        var instanceIdx = getInstanceIndex(input);
-        new Thread(() -> {
-          var pnCounter = getPNCounterReference(instanceIdx);
-          System.out.printf("Get on node %d, value %d%n", instanceIdx + 1, pnCounter.get());
-        }).start();
+        try {
+          var instanceIdx = getInstanceIndex(input);
+          new Thread(() -> {
+            var pnCounter = getPNCounterReference(instanceIdx);
+            System.out.printf("Get on node %d, value: %d%n", instanceIdx + 1, pnCounter.get());
+          }).start();
+        } catch (IllegalArgumentException e) {
+          System.out.println("Error: " + e.getMessage());
+        }
       }
     }
 
@@ -105,7 +109,15 @@ public class APDemo {
   }
 
   private int getInstanceIndex(String input) {
-    return Integer.parseInt(input.split(":")[1]) - 1;
+    String[] parts = input.split(":");
+    if (parts.length < 2) {
+      throw new IllegalArgumentException("Invalid format. Use command:nodeNumber (e.g. add:1)");
+    }
+    int idx = Integer.parseInt(parts[1]) - 1;
+    if (idx < 0 || idx >= nodes.size()) {
+      throw new IllegalArgumentException("Node number must be between 1 and " + nodes.size());
+    }
+    return idx;
   }
 
   private PNCounter getPNCounterReference(int instanceIdx) {

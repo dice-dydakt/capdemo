@@ -79,11 +79,15 @@ public class CPDemo {
         heal();
         System.out.println("Network partition healed. All nodes can communicate now.");
       } else if (input.startsWith("add")) {
-        var instanceIdx = getInstanceIndex(input);
-        new Thread(() -> {
-          var atomicVariable = getAtomicVariableReference(instanceIdx);
-          System.out.printf("Add on node %d, value: %d%n", instanceIdx + 1, atomicVariable.addAndGet(1));
-        }).start();
+        try {
+          var instanceIdx = getInstanceIndex(input);
+          new Thread(() -> {
+            var atomicVariable = getAtomicVariableReference(instanceIdx);
+            System.out.printf("Add on node %d, value: %d%n", instanceIdx + 1, atomicVariable.addAndGet(1));
+          }).start();
+        } catch (IllegalArgumentException e) {
+          System.out.println("Error: " + e.getMessage());
+        }
       } else if (input.startsWith("getAll")) {
         for (int i=0; i<3; i++) {
           var instanceIdx = i;
@@ -93,11 +97,15 @@ public class CPDemo {
           }).start();
         }
       } else if (input.startsWith("get")) {
-        var instanceIdx = getInstanceIndex(input);
-        new Thread(() -> {
-          var atomicVariable = getAtomicVariableReference(instanceIdx);
-          System.out.printf("Get on node %d, value %d%n", instanceIdx + 1, atomicVariable.get());
-        }).start();
+        try {
+          var instanceIdx = getInstanceIndex(input);
+          new Thread(() -> {
+            var atomicVariable = getAtomicVariableReference(instanceIdx);
+            System.out.printf("Get on node %d, value: %d%n", instanceIdx + 1, atomicVariable.get());
+          }).start();
+        } catch (IllegalArgumentException e) {
+          System.out.println("Error: " + e.getMessage());
+        }
       }
     }
 
@@ -105,7 +113,15 @@ public class CPDemo {
   }
 
   private int getInstanceIndex(String input) {
-    return Integer.parseInt(input.split(":")[1]) - 1;
+    String[] parts = input.split(":");
+    if (parts.length < 2) {
+      throw new IllegalArgumentException("Invalid format. Use command:nodeNumber (e.g. add:1)");
+    }
+    int idx = Integer.parseInt(parts[1]) - 1;
+    if (idx < 0 || idx >= nodes.size()) {
+      throw new IllegalArgumentException("Node number must be between 1 and " + nodes.size());
+    }
+    return idx;
   }
 
   private IAtomicLong getAtomicVariableReference(int instanceIdx) {
