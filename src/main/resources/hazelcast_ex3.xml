@@ -1,6 +1,6 @@
 <hazelcast xmlns="http://www.hazelcast.com/schema/config"
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-           xsi:schemaLocation="http://www.hazelcast.com/schema/config http://www.hazelcast.com/schema/config/hazelcast-config-5.0.xsd">
+           xsi:schemaLocation="http://www.hazelcast.com/schema/config http://www.hazelcast.com/schema/config/hazelcast-config-5.3.xsd">
 
     <network>
         <join>
@@ -17,7 +17,15 @@
 
     <properties>
         <property name="hazelcast.logging.type">log4j2</property>
+        <!-- Speed up split-brain merge for demo (defaults: 300s / 120s) -->
+        <property name="hazelcast.merge.first.run.delay.seconds">5</property>
+        <property name="hazelcast.merge.next.run.delay.seconds">5</property>
     </properties>
+
+    <crdt-replication>
+        <replication-period-millis>200</replication-period-millis>
+        <max-concurrent-replication-targets>2</max-concurrent-replication-targets>
+    </crdt-replication>
 
     <pn-counter name="default">
         <replica-count>10</replica-count>
