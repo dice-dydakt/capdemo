@@ -77,23 +77,34 @@ which applies firewall between them.
 3. Run `mvn exec:java@ex1`, `mvn exec:java@ex2` or `mvn exec:java@ex3` depending on the exercise
 
 ### Command line interface
-The examples provide a simple command-line interface to interact with:
-- `add:n` - increment the counter on node/replica `n` (n=1,2,3)
-- `getAll` - get value of the counter on all replicas
-- `partition` - start a partition
-- `heal` - heal the partition
+The examples provide an interactive command-line interface. The prompt shows the current cluster
+status (`OK` or `SPLIT`). Operations have a 10-second timeout, so commands during a CP partition
+will report `(timeout - no quorum)` instead of blocking indefinitely.
+
+| Command | Short | Description |
+|---------|-------|-------------|
+| `add:N` | `a:N` | Increment the counter on node N (N=1,2,3) |
+| `get:N` | `g:N` | Get the counter value from node N |
+| `getAll` | `ga` | Get counter values from all nodes (table view) |
+| `partition` | `p` | Simulate a network partition |
+| `heal` | | Restore network connectivity |
+| `status` | `s` | Show cluster status |
+| `help` | `h` | Show available commands |
+| `exit` | `q` | Quit |
 
 ### Viewing logs
 
-Hazelcast supports logging of operations  currently performed in the cluster. The programs
-generate logs into `log/hazelcast.log` to make the command prompt more readable.
-(configuration of logging is accessible in `resources/log4j2.properties` file) 
+Hazelcast logs detailed information about cluster operations (leader elections, Raft consensus,
+partition detection, etc.) into `log/hazelcast.log` to keep the command prompt clean and readable.
 
-To view the logs in real time you can use linux command:
+**Important:** Open a separate terminal and run the following command to observe the cluster behavior in real time:
 
 ```
 tail -f log/hazelcast.log
-``` 
+```
+
+This is especially useful during partition/heal steps to see Raft leader elections,
+quorum failures, and node reconnections as they happen.
 ### Observing the behavior
 
 In all exercises observe the behavior of the system by:
