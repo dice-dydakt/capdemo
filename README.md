@@ -12,10 +12,11 @@ distributed computing that was formulated by a computer scientist Eric Brewer in
 It states that in a distributed system, you can achieve at most two out of three desirable
 properties: Consistency, Availability, and Partition tolerance 
 ([formal proof](https://users.ece.cmu.edu/~adrian/731-sp04/readings/GL-cap.pdf)). 
-_Consistency_ refers to all nodes in the system having the same data at the same time, _Availability_ 
-means that every request to the system gets a response (not necessarily the most up-to-date), 
-while _Partition tolerance_ denotes the system's capability to continue the operation despite network 
-partitions or failures. The CAP theorem helps system designers make trade-offs in distributed systems 
+- **Consistency (C):** Every read returns the most recent write, or an error. The system behaves as a single atomic copy of the data (linearizability).
+- **Availability (A):** Every request received by a non-failing node must receive a response.
+- **Partition tolerance (P):** The system continues to operate even when the network drops or delays an arbitrary number of messages between nodes.
+
+The CAP theorem helps system designers make trade-offs in distributed systems
 to meet their specific requirements and constraints.
 
 <img src="images/img.png" alt="img" style="width:400px;"/>
@@ -184,6 +185,6 @@ Explain if and why you were/were not able to get/increase the value of ``PNCount
 
 Submit a report that explains the following:
 - (3p) Answer the questions found above in the description of Exercises 1,2,3.
-- (2p) Which data structures -- AP or CP -- require the Raft algorith? Why is this algorithm needed?
+- (2p) Which data structures -- AP or CP -- require the Raft algorithm? Why is this algorithm needed?
 - (2p) Read article [_Session Guarantees for Weakly Consistent Replicated Data_](https://www.cs.utexas.edu/users/lorenzo/corsi/cs380d/papers/SessionGuaranteesBayou.pdf) and explain what it means that the PN Counter in Hazelcast provides _Read-Your-Writes_ (RYW) and _Monotonic reads_ guarantees and why they are _session guarantees_.  
 
